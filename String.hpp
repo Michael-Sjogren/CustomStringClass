@@ -1,15 +1,18 @@
-#include <iostream>
+#include <cstring>
 class String
 {
 private:
-
+    unsigned int capacity = 100;
+    unsigned int length = 0;
+    char glyfths[100];
 public:
-    const char* symbols;
     String();
     String(const char* str);
+    String(char* str);
+    unsigned int Length();
+    void Append(String& other);
     operator const char*();
-    String Append(String other);
-    String operator+(String other);
+    String operator+=(String& other);
     ~String();
 };
 
@@ -19,21 +22,36 @@ String::String()
 }
 String::String(const char* str)
 {
-    symbols = str;    
+    length = strlen(str)+1;
+    if(sizeof(capacity) < sizeof(str)){
+        
+    }
+    strncpy(glyfths , str ,length);
+}
+
+String::String(char* str){
+
+}
+
+unsigned int String::Length(){
+    return length;
 }
 
 // append other string to my current instance
-String operator+(String other) {
-    return "";
+String String::operator+=(String& other) {
+    Append(other);
+    return glyfths;
 }
-String::operator const char *(){
-    return symbols;
+
+String::operator const char* (){
+    return glyfths; 
 }
-String String::Append(String other){
-    const int size = sizeof(other.symbols);
-    std::cout<< symbols << "\n";
-    return "";
+
+void String::Append(String& other){
+    length = other.Length()+Length();
+    strncat(glyfths ,other , length);
 }
+
 String::~String()
 {
 
