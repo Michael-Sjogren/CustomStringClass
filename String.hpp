@@ -1,60 +1,79 @@
 #include <cstring>
+#include <ostream>
 class String
 {
 private:
-    unsigned int capacity = 100;
-    unsigned int length = 0;
-    char glyfths[100];
+    char *m_buffer;
+    unsigned int m_size = 0;
+    // length of the string , not the memory size
+    unsigned int m_length = 0;
+
 public:
     String();
-    String(const char* str);
-    String(char* str);
-    unsigned int Length();
+    String(const char *str);
+    String(const String& s);
+    unsigned int Length() const;
     void Append(String& other);
     operator const char*();
-    String operator+=(String& other);
+    char& operator[](unsigned int index);
+    String operator +=(String& other);
+
+    friend std::ostream& operator<<(std::ostream& stream , const String& string);
     ~String();
 };
 
-String::String()
+std::ostream& operator<<(std::ostream& stream , const String& string){
+    stream << string.m_buffer;
+    return stream;
+}
+char& String::operator[](unsigned int index){
+    return m_buffer[index];
+}
+
+String::String(const String& other) :
+    m_size(other.m_size)
 {
-
+    m_buffer = new char[m_size+1];
+    memcpy(m_buffer , other.m_buffer , m_size +1);
 }
-String::String(const char* str)
+
+String::String(const char *str)
 {
-    length = strlen(str)+1;
-    if(sizeof(capacity) < sizeof(str)){
-        
-    }
-    strncpy(glyfths , str ,length);
+    m_size = strlen(str);
+    m_buffer = new char[m_size+1];
+    strncpy(m_buffer,str , m_size);
+    m_buffer[m_size] = 0;
 }
 
-String::String(char* str){
-
-}
-
-unsigned int String::Length(){
-    return length;
+unsigned int String::Length() const{
+    return m_size;
 }
 
 // append other string to my current instance
 String String::operator+=(String& other) {
     Append(other);
-    return glyfths;
+    return m_buffer;
 }
 
 String::operator const char* (){
-    return glyfths; 
+    return m_buffer; 
 }
 
-void String::Append(String& other){
-    length = other.Length()+Length();
-    strncat(glyfths ,other , length);
+void String::Append(String& other)
+{
+    char* temp = new char[m_size+other.m_size +1];
+    strcpy(temp , m_buffer);
+    delete [] m_buffer;
+    m_buffer = nullptr;
+    m_buffer = temp;
+    m_size = m_size+other.m_size+1;
+    strncat(m_buffer ,other.m_buffer , other.Length());
+    temp = nullptr;
 }
 
 String::~String()
 {
-
+    delete[] m_buffer;
 }
 
 

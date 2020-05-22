@@ -6,12 +6,19 @@ void Log(const char* str)
 {
     std::cout << str << "\n";
 }
-int main(int argc, char const *argv[])
+
+void Log(const String& str)
 {
-    String s = "One,";
-    String b = "Two";
+    std::cout << str << "\n";
+}
+int main()
+{
+    String s = "Kan,";
+    String b = "Ban";
+    std::cout << sizeof(s) << "\n";
     s += b;
     Log(s);
+    std::cout << sizeof(s) << "\n";
     return 0;
 }
 
