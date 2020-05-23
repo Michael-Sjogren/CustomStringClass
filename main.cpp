@@ -13,12 +13,12 @@ void Log(const String& str)
 }
 int main()
 {
-    String s = "Kan,";
-    String b = "Ban";
-    std::cout << sizeof(s) << "\n";
+    String s = "Kan,Ban Anas";
+    String b = "Ban Anas";
+    String c = "Kan,Ban Anas";
+    bool result = (s==c);
     s += b;
     Log(s);
-    std::cout << sizeof(s) << "\n";
     return 0;
 }
 

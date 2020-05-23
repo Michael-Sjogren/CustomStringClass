@@ -16,15 +16,24 @@ public:
     void Append(String& other);
     operator const char*();
     char& operator[](unsigned int index);
+    bool operator==(String& other);
     String operator +=(String& other);
-
+    const char* GetBuffer();
     friend std::ostream& operator<<(std::ostream& stream , const String& string);
     ~String();
 };
 
+const char* String::GetBuffer(){
+    return m_buffer;
+}
 std::ostream& operator<<(std::ostream& stream , const String& string){
     stream << string.m_buffer;
     return stream;
+}
+
+bool String::operator==(String& other){
+    bool result = strncmp(m_buffer,other.m_buffer,Length());
+    return result == 0 ? true : false;
 }
 char& String::operator[](unsigned int index){
     return m_buffer[index];
